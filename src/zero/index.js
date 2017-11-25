@@ -4,7 +4,8 @@ const HandshakeClient = require('zeronet-client').HandshakeClient
 
 const PeerRequest = require('peer-request')
 const validate = require('zeronet-common/src/verify').verifyProtocol
-const PeerRequestHandler = require('./peer-request-handler.js')
+const PeerRequestHandler = require('./peer-request-handler')
+const Handshake = require('./handshake')
 
 const Crypto = require('zeronet-crypto').protocol
 const debug = require('debug')
@@ -55,6 +56,8 @@ function ZProtocol (opt, zeronet) {
     handlers[name] = cb
   }
 
+  self.handshake = Handshake
+
   if (opt.crypto) {
     Crypto(self)
     if (!Array.isArray(opt.crypto)) opt.crypto = [opt.crypto]
@@ -63,4 +66,4 @@ function ZProtocol (opt, zeronet) {
 }
 
 module.exports = ZProtocol
-module.exports.Handshake = require('zeronet-common/src/handshake')
+module.exports.Handshake = Handshake

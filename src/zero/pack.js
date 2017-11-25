@@ -1,6 +1,6 @@
 'use strict'
 
-const inet = require('zeronet-common/lib/network/inet')
+const inet = require('zeronet-common/src/network/inet')
 const assert = require('assert')
 
 /*
