@@ -1,3 +1,13 @@
+<a name="0.0.5"></a>
+## [0.0.5](https://github.com/ZeroNetJS/zeronet-js/compare/v0.0.4...v0.0.5) (2017-11-25)
+
+
+### Features
+
+* Move verifyProtocol here, drop common ([7da64c7](https://github.com/ZeroNetJS/zeronet-js/commit/7da64c7))
+
+
+
 <a name="0.0.4"></a>
 ## 0.0.4 (2017-11-25)
 
