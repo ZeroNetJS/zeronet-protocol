@@ -1,3 +1,18 @@
+<a name="0.0.4"></a>
+## 0.0.4 (2017-11-25)
+
+
+### Bug Fixes
+
+* require ([200a4b3](https://github.com/ZeroNetJS/zeronet-js/commit/200a4b3))
+
+
+### Features
+
+* Move handshake from common to protocol ([1256403](https://github.com/ZeroNetJS/zeronet-js/commit/1256403))
+
+
+
 <a name="0.0.3"></a>
 ## [0.0.3](https://github.com/ZeroNetJS/zeronet-js/compare/v0.0.2...v0.0.3) (2017-11-25)
 
