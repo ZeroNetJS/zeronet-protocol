@@ -48,7 +48,11 @@
     "zeronet-crypto": "file:../zeronet-crypto"
   },
   "directories": {
-    "lib": "lib"
+    "test": "test",
+    "src": "src",
+    "lib": "src"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "aegir": "^12.2.0"
+  }
 }
