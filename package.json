@@ -44,7 +44,6 @@
     "pull-queue": "^0.1.4",
     "pull-stream": "^3.6.1",
     "zeronet-client": "^0.2.2",
-    "zeronet-common": "^0.2.0",
     "zeronet-crypto": "^0.0.4"
   },
   "directories": {

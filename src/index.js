@@ -3,7 +3,7 @@
 const protobuf = require('protons')
 const assert = require('assert')
 const PeerRequest = require('peer-request')
-const validate = require('zeronet-common/src/verify').verifyProtocol
+const validate = require('./zero/verify')
 
 function protoparse (def, isout) {
   let r = 'message PeerCmd {'
@@ -66,3 +66,4 @@ module.exports = Protocol
 module.exports.PeerMSG = PeerMSG
 module.exports.Zero = require('./zero')
 module.exports.Lp2p = require('./lp2p')
+module.exports.Validate = validate
