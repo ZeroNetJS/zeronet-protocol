@@ -43,9 +43,9 @@
     "pull-protocol-buffers": "^0.1.1",
     "pull-queue": "^0.1.4",
     "pull-stream": "^3.6.1",
-    "zeronet-client": "file:../zeronet-client",
-    "zeronet-common": "file:../zeronet-common",
-    "zeronet-crypto": "file:../zeronet-crypto"
+    "zeronet-client": "^0.2.1",
+    "zeronet-common": "^0.2.0",
+    "zeronet-crypto": "^0.0.4"
   },
   "directories": {
     "test": "test",

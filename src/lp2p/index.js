@@ -1,33 +1,33 @@
-"use strict"
+'use strict'
 
-const ppb = require("pull-protocol-buffers").pull
-const pull = require("pull-stream")
-const empty = require("protocol-buffers")("message PeerCmd {required bool empty = 1;}").PeerCmd.encode({
+const ppb = require('pull-protocol-buffers').pull
+const pull = require('pull-stream')
+const empty = require('protocol-buffers')('message PeerCmd {required bool empty = 1;}').PeerCmd.encode({
   empty: true
 })
-const once = require("once")
+const once = require('once')
 
-const debug = require("debug")
-const plog = debug("zeronet:protocol:lp2p:client")
-plog.enabled = !!process.env.DEBUG_PACKETS
-const clone = require("clone")
+const debug = require('debug')
+const plog = debug('zeronet:protocol:lp2p:client')
+plog.enabled = Boolean(process.env.DEBUG_PACKETS)
+const clone = require('clone')
 
-function thingInspect(d /*, n*/ ) {
-  if (Buffer.isBuffer(d)) return "<Buffer length=" + d.length + ">"
+function thingInspect (d /*, n */) {
+  if (Buffer.isBuffer(d)) return '<Buffer length=' + d.length + '>'
   return JSON.stringify(d)
 }
 
-function objectInspect(data) {
-  if (!plog.enabled) return "-"
+function objectInspect (data) {
+  if (!plog.enabled) return '-'
   let d = clone(data)
   let r = []
-  for (var p in d)
-    r.push(p + "=" + thingInspect(d[p], p))
-  return r.join(", ")
+  for (var p in d) {
+    r.push(p + '=' + thingInspect(d[p], p))
+  }
+  return r.join(', ')
 }
 
-module.exports = function LProtocol(opt, lp2p) {
-
+module.exports = function LProtocol (opt, lp2p) {
   const self = this
   const swarm = lp2p.libp2p
   const protos = self.protos = {}
@@ -36,21 +36,21 @@ module.exports = function LProtocol(opt, lp2p) {
 
   self.handle = (name, proto) => {
     protos[name] = proto
-    swarm.handle("/zn/" + name + "/2.0.0", (protocol, conn) => {
+    swarm.handle('/zn/' + name + '/2.0.0', (protocol, conn) => {
       pull(
         conn.source,
         ppb.decode(proto.in.proto.msg),
         pull.take(1),
         pull.asyncMap((data, cb) => {
-          plog("got   request", name, objectInspect(data))
+          plog('got   request', name, objectInspect(data))
           proto.peerRequest.handleRequest((err, res) => {
             if (err) {
               res = {
-                error: err.toString().split("\n").shift()
+                error: err.toString().split('\n').shift()
               }
               err = null
             }
-            plog("sent response", name, objectInspect(res))
+            plog('sent response', name, objectInspect(res))
             cb(err, res)
           }, data, proto.handler)
         }),
@@ -62,11 +62,11 @@ module.exports = function LProtocol(opt, lp2p) {
 
   lp2p.cmd = (peer, cmd, data, _cb) => {
     const cb = once(_cb)
-    if (!protos[cmd]) return cb(new Error("CMD Unsupported"))
+    if (!protos[cmd]) return cb(new Error('CMD Unsupported'))
     const proto = protos[cmd]
-    lp2p.dial(peer, "/zn/" + cmd + "/2.0.0", (err, conn) => {
+    lp2p.dial(peer, '/zn/' + cmd + '/2.0.0', (err, conn) => {
       if (err) return cb(err)
-      plog("sent  request", cmd, objectInspect(data))
+      plog('sent  request', cmd, objectInspect(data))
       proto.peerRequest.sendRequest((data, cb) => {
         pull(
           pull.values([data]),
@@ -81,9 +81,9 @@ module.exports = function LProtocol(opt, lp2p) {
               pull.collect((err, data) => {
                 if (err) return cb(err)
                 else {
-                  if (data.length != 1 || !data[0]) cb(new Error("Decoding failed! data.len != 1"))
+                  if (data.length !== 1 || !data[0]) cb(new Error('Decoding failed! data.len != 1'))
                   const res = data[0]
-                  plog("got  response", cmd, objectInspect(res))
+                  plog('got  response', cmd, objectInspect(res))
                   if (res.error) return cb(new Error(res.error))
                   return cb(null, res)
                 }
@@ -94,5 +94,4 @@ module.exports = function LProtocol(opt, lp2p) {
       }, data, cb)
     })
   }
-
 }
