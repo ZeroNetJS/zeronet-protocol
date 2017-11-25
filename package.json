@@ -54,5 +54,9 @@
   },
   "devDependencies": {
     "aegir": "^12.2.0"
-  }
+  },
+  "contributors": [
+    "kustomzone <github@kustomzone.com>",
+    "mkg20001 <mkg20001@gmail.com>"
+  ]
 }
