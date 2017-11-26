@@ -8,9 +8,9 @@ function genHandshakeData (protocol, client, zeronet) {
   let d = {
     crypt: null,
     crypt_supported: protocol.crypto ? protocol.crypto.supported() : [],
-    fileserver_port: zeronet.swarm.zero.advertise.port || 0,
+    fileserver_port: (zeronet.swarm.zero || {}).advertise.port || 0,
     protocol: 'v2',
-    port_opened: zeronet.swarm.zero.advertise.port_open || false,
+    port_opened: (zeronet.swarm.zero || {}).advertise.port_open || false,
     rev: zeronet.rev,
     version: zeronet.version,
     own: true // this marks our own handshake. required for linking
@@ -19,8 +19,8 @@ function genHandshakeData (protocol, client, zeronet) {
     d.onion = 0 // TODO: add tor
   } else {
     d.peer_id = zeronet.peer_id
-    d.target_ip = zeronet.swarm.zero.advertise.ip || '0.0.0.0'
-    d.libp2p = zeronet.swarm.lp2p.adv
+    d.target_ip = (zeronet.swarm.zero || {}).advertise.ip || '0.0.0.0'
+    d.libp2p = (zeronet.swarm.lp2p || {}).adv
   }
   return d
 }
@@ -99,18 +99,22 @@ module.exports = function ZeroNetHandshake (client, protocol, zeronet, opt) {
   }
 
   function handshakeGet (data, cb) {
-    log('Got handshake', opt)
-    const handshake = new Handshake(genHandshakeData(protocol, client, zeronet))
-    const remoteHandshake = new Handshake(data)
-    handshake.link(remoteHandshake)
-    handshake.crypt = protocol.crypto && handshake.commonCrypto() ? handshake.commonCrypto() : null
-    cb(null, handshake.toJSON())
-    client.handshakeData = handshake
-    client.remoteHandshake = remoteHandshake
-    log('Finished handshake', opt)
-    handshakeComplete(null, {
-      isServer: true
-    })
+    try {
+      log('Got handshake', opt)
+      const handshake = new Handshake(genHandshakeData(protocol, client, zeronet))
+      const remoteHandshake = new Handshake(data)
+      handshake.link(remoteHandshake)
+      handshake.crypt = protocol.crypto && handshake.commonCrypto() ? handshake.commonCrypto() : null
+      cb(null, handshake.toJSON())
+      client.handshakeData = handshake
+      client.remoteHandshake = remoteHandshake
+      log('Finished handshake', opt)
+      handshakeComplete(null, {
+        isServer: true
+      })
+    } catch (e) {
+      log(e)
+    }
   }
 
   log('use handshake', opt)
@@ -118,8 +122,8 @@ module.exports = function ZeroNetHandshake (client, protocol, zeronet, opt) {
   client.handshake = handshakeInit
 
   client.waitForHandshake = cb => {
-    if (Array.isArray(waiting)) waiting.push(cb)
-    else cb(waiting, client.handshakeData, client._opt)
+    if (Array.isArray(waiting)) waiting.push(cb) // if we haven't gotten the data yet, add to queue
+    else cb(waiting, client.handshakeData, client._opt) // else run cb with data
   }
 
   return new PeerRequestHandler('handshake', module.exports.req, client, handshakeGet)
