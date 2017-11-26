@@ -1,3 +1,13 @@
+<a name="0.0.6"></a>
+## [0.0.6](https://github.com/ZeroNetJS/zeronet-js/compare/v0.0.5...v0.0.6) (2017-11-26)
+
+
+### Bug Fixes
+
+* handshake issues when a swarm is missing ([8836573](https://github.com/ZeroNetJS/zeronet-js/commit/8836573))
+
+
+
 <a name="0.0.5"></a>
 ## [0.0.5](https://github.com/ZeroNetJS/zeronet-js/compare/v0.0.4...v0.0.5) (2017-11-25)
 
