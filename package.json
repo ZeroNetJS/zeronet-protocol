@@ -43,7 +43,7 @@
     "pull-protocol-buffers": "~0.1.1",
     "pull-queue": "~0.1.4",
     "pull-stream": "~3.6.1",
-    "zeronet-client": "~0.2.3",
+    "zeronet-client": "~0.3.1",
     "zeronet-crypto": "~0.0.4"
   },
   "directories": {

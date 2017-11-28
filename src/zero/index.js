@@ -1,34 +1,40 @@
 'use strict'
 
-const HandshakeClient = require('zeronet-client').HandshakeClient
+const debug = require('debug')
+const log = debug('zeronet:protocol:zero')
 
-const PeerRequest = require('peer-request')
 const validate = require('./verify')
-const PeerRequestHandler = require('./peer-request-handler')
-const Handshake = require('./handshake')
+const PeerRequest = require('peer-request')
+const handler = require('./peer-request-handler')
+
+const HandshakeClient = require('./handshake/client')
 
 const Crypto = require('zeronet-crypto').protocol
-const debug = require('debug')
 
 function ZProtocol (opt, zeronet) {
   if (!opt) opt = {}
+  log('create zero protocol', opt)
 
-  let handlers = {}
-  let commands = {}
   const self = this
-  const log = debug('zeronet:protocol')
+  const commands = self.commands = {}
+  const handlers = self.handlers = {}
 
-  self.getHandler = (name, client) => {
-    if (!commands[name]) throw new Error('Unknown command ' + name)
-    return new PeerRequestHandler(name, commands[name], client, handlers[name])
+  self.attach = client => {
+    client.cmd = {}
+    Object.keys(commands).forEach(cmd => {
+      log('attaching %s to %s', cmd, client.addr)
+      const h = handler(cmd, commands[cmd], client, handlers[cmd])
+      client.handlers[cmd] = h.recv
+      client.cmd[cmd] = h.send
+    })
   }
 
   self.upgradeConn = opt =>
     (conn, cb) => {
       log('upgrading conn', opt)
       if (!cb) cb = () => {}
-      const c = conn.client = new HandshakeClient(conn, self, zeronet, Object.assign(opt))
-      c.conn = conn.client
+      const c = conn.client = new HandshakeClient(conn, opt, zeronet, self)
+      c.conn = conn
       c.upgrade((err, client, upgrade) => {
         if (err) return cb(err)
         if (upgrade) {
@@ -41,22 +47,12 @@ function ZProtocol (opt, zeronet) {
       })
     }
 
-  self.getHandlers = client => {
-    let res = {}
-    for (var name in commands) {
-      res[name] = self.getHandler(name, client)
-    }
-    return res
-  }
-
   self.handle = self.handleZN = (name, def, defret, cb) => {
     if (commands[name]) throw new Error(name + ' is already handled')
     log('Handling', name)
     commands[name] = new PeerRequest(name, def, defret, validate)
     handlers[name] = cb
   }
-
-  self.handshake = Handshake
 
   if (opt.crypto) {
     Crypto(self)
@@ -66,4 +62,3 @@ function ZProtocol (opt, zeronet) {
 }
 
 module.exports = ZProtocol
-module.exports.Handshake = Handshake
