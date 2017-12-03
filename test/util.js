@@ -3,6 +3,8 @@
 const _Duplex = require('pull-pair/duplex')
 const Connection = require('interface-connection').Connection
 const multiaddr = require('multiaddr')
+const pull = require('pull-stream')
+const assert = require('assert')
 
 const Duplex = () => {
   const d = _Duplex()
@@ -15,5 +17,14 @@ const Duplex = () => {
 }
 
 module.exports = {
-  Duplex
+  Duplex,
+  pullCompare: (v, cb) => pull.collect((err, res) => {
+    if (cb) {
+      if (err) return cb(err)
+    } else {
+      if (err) throw err
+    }
+    assert.deepEqual(v, res)
+    if (cb) cb()
+  })
 }

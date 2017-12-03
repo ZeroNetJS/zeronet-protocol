@@ -1,8 +1,9 @@
 'use strict'
 
+const pull = require('pull-stream')
 const Client = require('zeronet-client')
 const Handshake = require('.')
-const WrapperStream = require('../stream/bridge')
+const redir = require('pull-redirectable')
 const handler = require('../peer-request-handler')
 const EE = require('events').EventEmitter
 const once = require('once')
@@ -18,11 +19,16 @@ class HandshakeClient extends EE {
     this.clientHandlers = {}
     this.protocol = protocol
     this.zeronet = zeronet
-    this.stream = WrapperStream(conn)
+    this.stream = redir.duplex()
+    pull(
+      conn,
+      this.stream,
+      conn
+    )
     this.conn = conn
 
     // Client
-    this.client = Client(new Connection(this.stream, this.conn), this.clientHandlers, opt.isServer)
+    this.client = Client(new Connection(this.stream.a, this.conn), this.clientHandlers, opt.isServer)
     this.isServer = this.client.isServer
 
     // Handlers
@@ -42,7 +48,6 @@ class HandshakeClient extends EE {
     const shake = this.isServer ? this.waitForHandshake.bind(this) : this.requestHandshake.bind(this)
     shake((err, handshake) => {
       if (err) return cb(err)
-      this.client.disconnect()
       const next = conn => {
         const client = Client(conn, {}, this.isServer)
         this.protocol.attach(client)
@@ -70,10 +75,12 @@ class HandshakeClient extends EE {
   }
   gotHandshake (data, cb) {
     const h = new Handshake(data)
+    this.stream.changeDest('b', 'src')
     if (cb) cb(null, this.handshake.local)
     h.link(this.handshake.local)
     this.handshake.remote = h
     this.emit('gotHandshake')
+    // this.client.disconnect()
   }
   waitForHandshake (cb) {
     if (this.handshake.remote) return cb(null, this.handshake.remote)
@@ -94,7 +101,8 @@ class HandshakeClient extends EE {
     this.client.unpack.getChunks().pipe(bl((err, data) => {
       log('[%s/HANDSHAKE]: appending leftover bytes', this.client.addr, data.length)
       if (err) return cb(err)
-      cb(null, new Connection(this.stream.restore([data]), this.conn))
+      this.stream.changeDest('b', 'sk')
+      cb(null, new Connection(this.stream.b, this.conn))
     }))
   }
 }
