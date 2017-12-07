@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* eslint-disable max-nested-callback */
 
 'use strict'
 
