@@ -15,6 +15,9 @@
     "coverage": "aegir coverage",
     "coverage-publish": "aegir coverage -u"
   },
+  "browser": {
+    "test/tcp-duplex.js": "./test/tcp-duplex-browser.js"
+  },
   "keywords": [
     "zeronet",
     "protocol"
