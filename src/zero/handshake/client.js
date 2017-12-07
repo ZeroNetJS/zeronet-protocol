@@ -11,6 +11,9 @@ const bl = require('bl')
 const debug = require('debug')
 const log = debug('zeronet:protocol:zero:handshake')
 const Connection = require('interface-connection').Connection
+const cat = require('pull-cat')
+
+process.on('uncaughtException', e => console.error(e))
 
 class HandshakeClient extends EE {
   constructor (conn, opt, zeronet, protocol) {
@@ -49,6 +52,15 @@ class HandshakeClient extends EE {
     shake((err, handshake) => {
       if (err) return cb(err)
       const next = conn => {
+        /* pull(
+          pull.values(['hi', 'lol']),
+          conn,
+          pull.collect((err, res) => {
+            console.log(this.isServer, err, res)
+            require('assert').deepEqual(['hi', 'lol'], res.map(s => s.toString()))
+            console.log("OK: "+this.isServer)
+          })
+        ) */
         const client = Client(conn, {}, this.isServer)
         this.protocol.attach(client)
         client.handshake = this.handshake
@@ -77,9 +89,11 @@ class HandshakeClient extends EE {
     const h = new Handshake(data)
     this.stream.changeDest('b', 'src')
     if (cb) cb(null, this.handshake.local)
+    this.stream.changeDest('b', 'sk')
     h.link(this.handshake.local)
     this.handshake.remote = h
     this.emit('gotHandshake')
+    if (this.stream.sk.dest !== 'b') this.stream.changeDest('b', 'sk')
     // this.client.disconnect()
   }
   waitForHandshake (cb) {
@@ -96,13 +110,29 @@ class HandshakeClient extends EE {
       this.gotHandshake(data)
       cb(null, this.handshake.remote)
     })
+    process.nextTick(() => this.stream.changeDest('b', 'sk'))
   }
   getRaw (cb) {
     this.client.unpack.getChunks().pipe(bl((err, data) => {
-      log('[%s/HANDSHAKE]: appending leftover bytes', this.client.addr, data.length)
+      if (data.length) log('[%s/HANDSHAKE]: appending leftover bytes', this.client.addr, data.length)
+      log('[%s/HANDSHAKE]: handshake done, upgrade', this.client.addr)
       if (err) return cb(err)
-      this.stream.changeDest('b', 'sk')
-      cb(null, new Connection(this.stream.b, this.conn))
+      if (this.stream.sk.dest !== 'b') this.stream.changeDest('b', 'sk')
+      cb(null, new Connection({
+        source: data.length ? cat(
+          [
+            pull.values([data]),
+            this.stream.b.source
+          ]
+        ) : this.stream.b.source,
+        sink: pull(
+          pull.map(v => {
+            console.log('sink', this.isServer, v)
+            return v
+          }),
+          this.stream.b.sink
+        )
+      }, this.conn))
     }))
   }
 }

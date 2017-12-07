@@ -1,0 +1,21 @@
+  sink: [Function: bound sink],
+  handlers: { handshake: [Function] },
+  queue: null,
+  req_id: 2,
+  isServer: false,
+  addr: 'server: /ip4/127.0.0.1/tcp/15544',
+  unpack: 
+   { source: { [Function: read] push: [Function: push], end: [Function: end] },
+     sink: [Function: sink],
+     getChunks: [Function: getChunks] },
+  end: true }
+true undefined
+  pull-redirectable:sink [a]: done true +1ms ---- SINK GETS CLOSED!!! THIS BREAKS *EVERYTHING*!
+  pull-redirectable:source [b]: got res (end=true, data=false) +0ms
+false null [ 'hi', 'lol' ]
+  pull-redirectable:sink [+]: got res (end=true, data=false) +2ms
+true
+  pull-redirectable:source [+]: done true +0ms
+  pull-redirectable:sink [+]: got read (end=true) +0ms
+  pull-redirectable:sink [+]: got res (end=true, data=false) +0ms
+
