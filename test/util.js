@@ -16,8 +16,11 @@ const Duplex = () => {
   })
 }
 
+const TCPDuplex = require('./tcp-duplex')
+
 module.exports = {
   Duplex,
+  TCPDuplex,
   pullCompare: (v, cb) => pull.collect((err, res) => {
     if (cb) {
       if (err) return cb(err)
@@ -26,5 +29,6 @@ module.exports = {
     }
     assert.deepEqual(v, res)
     if (cb) cb()
-  })
+  }),
+  skipbrowser: it => process.toString() === '[object process]' ? it : it.skip
 }

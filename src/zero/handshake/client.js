@@ -11,6 +11,7 @@ const bl = require('bl')
 const debug = require('debug')
 const log = debug('zeronet:protocol:zero:handshake')
 const Connection = require('interface-connection').Connection
+const cat = require('pull-cat')
 
 class HandshakeClient extends EE {
   constructor (conn, opt, zeronet, protocol) {
@@ -80,7 +81,7 @@ class HandshakeClient extends EE {
     h.link(this.handshake.local)
     this.handshake.remote = h
     this.emit('gotHandshake')
-    // this.client.disconnect()
+    if (this.stream.sk.dest !== 'b') this.stream.changeDest('b', 'sk')
   }
   waitForHandshake (cb) {
     if (this.handshake.remote) return cb(null, this.handshake.remote)
@@ -96,13 +97,23 @@ class HandshakeClient extends EE {
       this.gotHandshake(data)
       cb(null, this.handshake.remote)
     })
+    process.nextTick(() => this.stream.changeDest('b', 'sk'))
   }
   getRaw (cb) {
     this.client.unpack.getChunks().pipe(bl((err, data) => {
-      log('[%s/HANDSHAKE]: appending leftover bytes', this.client.addr, data.length)
+      if (data.length) log('[%s/HANDSHAKE]: appending leftover bytes', this.client.addr, data.length)
+      log('[%s/HANDSHAKE]: handshake done, upgrade', this.client.addr)
       if (err) return cb(err)
-      this.stream.changeDest('b', 'sk')
-      cb(null, new Connection(this.stream.b, this.conn))
+      if (this.stream.sk.dest !== 'b') this.stream.changeDest('b', 'sk')
+      cb(null, new Connection({
+        source: data.length ? cat(
+          [
+            pull.values([data]),
+            this.stream.b.source
+          ]
+        ) : this.stream.b.source,
+        sink: this.stream.b.sink
+      }, this.conn))
     }))
   }
 }
