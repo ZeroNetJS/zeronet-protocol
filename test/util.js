@@ -18,7 +18,7 @@ const Duplex = () => {
 
 const TCPDuplex = require('./tcp-duplex')
 
-function hexcrypt (protocol, zeronet, id) {
+function hexcrypt (protocol) {
   protocol.crypto.add('hex', (conn, conf, cb) => { // DON'T use this crypto in production
     const [a, b] = _Duplex()
     pull(
