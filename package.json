@@ -33,18 +33,12 @@
   },
   "homepage": "https://github.com/ZeroNetJS/zeronet-protocol#readme",
   "dependencies": {
-    "clone": "~2.1.1",
-    "hypercache": "~0.2.0",
-    "ip": "~1.1.5",
-    "libp2p-secio": "~0.8.1",
-    "libp2p-spdy": "~0.11.0",
     "msgpack5": "~3.6.0",
     "once": "~1.4.0",
     "peer-request": "~0.1.2",
     "protons": "~1.0.1",
-    "pull-catch": "~1.0.0",
+    "pull-cat": "^1.1.11",
     "pull-protocol-buffers": "~0.1.1",
-    "pull-queue": "~0.1.4",
     "pull-redirectable": "0.1.2",
     "pull-stream": "~3.6.1",
     "zeronet-client": "~0.3.2"
@@ -58,7 +52,8 @@
     "aegir": "^12.2.0",
     "chai": "^4.1.2",
     "dirty-chai": "^2.0.1",
-    "libp2p-tcp": "^0.11.1"
+    "libp2p-tcp": "^0.11.1",
+    "pull-pair": "^1.1.0"
   },
   "contributors": [
     "kustomzone <github@kustomzone.com>",
