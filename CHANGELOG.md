@@ -1,3 +1,19 @@
+<a name="0.1.0"></a>
+# [0.1.0](https://github.com/ZeroNetJS/zeronet-protocol/compare/v0.0.6...v0.1.0) (2017-12-13)
+
+
+### Bug Fixes
+
+* Sink closed error (fixes [#1](https://github.com/ZeroNetJS/zeronet-protocol/issues/1)) ([a8a0d22](https://github.com/ZeroNetJS/zeronet-protocol/commit/a8a0d22))
+
+
+### Features
+
+* Move crypto here and add tests ([a888c41](https://github.com/ZeroNetJS/zeronet-protocol/commit/a888c41))
+* Rewrite zeronet protocol ([5dbb78b](https://github.com/ZeroNetJS/zeronet-protocol/commit/5dbb78b))
+
+
+
 <a name="0.0.6"></a>
 ## [0.0.6](https://github.com/ZeroNetJS/zeronet-js/compare/v0.0.5...v0.0.6) (2017-11-26)
 
