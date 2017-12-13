@@ -12,10 +12,7 @@ describe('protocol-buffers', () => {
   it('should parse sample 1 correct', () => {
     msg = new Protocol.PeerMSG({
       protobuf: {
-        1: [
-          'string',
-          'name'
-        ]
+        1: 'string name'
       },
       strict: {
         name: 'string'

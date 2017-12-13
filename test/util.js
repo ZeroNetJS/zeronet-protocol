@@ -18,6 +18,23 @@ const Duplex = () => {
 
 const TCPDuplex = require('./tcp-duplex')
 
+function hexcrypt (protocol, zeronet, id) {
+  protocol.crypto.add('hex', (conn, conf, cb) => { // DON'T use this crypto in production
+    const [a, b] = _Duplex()
+    pull(
+      conn,
+      pull.map(d => Buffer.from(d.toString(), 'hex')),
+      b.sink
+    )
+    pull(
+      b.source,
+      pull.map(d => (Buffer.isBuffer(d) ? d : Buffer.from(d)).toString('hex')),
+      conn
+    )
+    return cb(null, new Connection(a, conn))
+  })
+}
+
 module.exports = {
   Duplex,
   TCPDuplex,
@@ -30,5 +47,6 @@ module.exports = {
     assert.deepEqual(v, res)
     if (cb) cb()
   }),
-  skipbrowser: it => process.toString() === '[object process]' ? it : it.skip
+  skipbrowser: it => process.toString() === '[object process]' ? it : it.skip,
+  hexcrypt
 }

@@ -12,7 +12,7 @@ const plog = debug('zeronet:protocol:lp2p:client')
 plog.enabled = Boolean(process.env.DEBUG_PACKETS)
 const clone = require('clone')
 
-function thingInspect (d /*, n */) {
+function thingInspect (d) {
   if (Buffer.isBuffer(d)) return '<Buffer length=' + d.length + '>'
   return JSON.stringify(d)
 }

@@ -19,7 +19,7 @@ function protoparse (def, isout) {
   }
   for (var i in def) {
     const v = def[i]
-    r += v[0] + ' ' + v[1] + ' = ' + i + ' ;'
+    r += (Array.isArray(v) ? v.join(' ') : v) + ' = ' + i + ' ;'
   }
   r += '}'
   return r

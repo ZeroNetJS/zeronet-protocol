@@ -9,7 +9,7 @@ const handler = require('./peer-request-handler')
 
 const HandshakeClient = require('./handshake/client')
 
-const Crypto = require('zeronet-crypto').protocol
+const Crypto = require('./crypto')
 
 function ZProtocol (opt, zeronet) {
   if (!opt) opt = {}

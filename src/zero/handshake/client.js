@@ -108,7 +108,7 @@ class HandshakeClient extends EE {
       cb(null, new Connection({
         source: data.length ? cat(
           [
-            pull.values([data]),
+            pull.values([data]), // append leftover data
             this.stream.b.source
           ]
         ) : this.stream.b.source,
