@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/ZeroNetJS/zeronet-protocol#readme",
   "dependencies": {
+    "clone": "^2.1.1",
     "msgpack5": "~3.6.0",
     "once": "~1.4.0",
     "peer-request": "~0.1.2",
