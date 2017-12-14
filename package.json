@@ -41,7 +41,7 @@
     "pull-protocol-buffers": "~0.1.1",
     "pull-redirectable": "0.1.2",
     "pull-stream": "~3.6.1",
-    "zeronet-client": "~0.3.2"
+    "zeronet-client": "~0.3.3"
   },
   "directories": {
     "test": "test",
