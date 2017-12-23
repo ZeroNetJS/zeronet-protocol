@@ -77,6 +77,7 @@ class HandshakeClient extends EE {
   gotHandshake (data, cb) {
     const h = new Handshake(data)
     this.stream.changeDest('b', 'src')
+    this.handshake.local.crypt = this.handshake.local.crypt_supported.filter(c => h.crypt_supported.indexOf(c) !== -1)[0] // zeronet-py compatibility fix (btw, deadlock if you put cb after .link) TODO: fix for real
     if (cb) cb(null, this.handshake.local)
     h.link(this.handshake.local)
     this.handshake.remote = h
