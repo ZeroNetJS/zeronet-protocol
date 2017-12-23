@@ -34,7 +34,6 @@
   "homepage": "https://github.com/ZeroNetJS/zeronet-protocol#readme",
   "dependencies": {
     "clone": "^2.1.1",
-    "msgpack5": "~3.6.0",
     "once": "~1.4.0",
     "peer-request": "~0.1.2",
     "protons": "~1.0.1",
@@ -42,7 +41,7 @@
     "pull-protocol-buffers": "~0.1.1",
     "pull-redirectable": "0.1.2",
     "pull-stream": "~3.6.1",
-    "zeronet-client": "~0.3.3"
+    "zeronet-client": "~0.3.4"
   },
   "directories": {
     "test": "test",
@@ -50,7 +49,7 @@
     "lib": "src"
   },
   "devDependencies": {
-    "aegir": "^12.2.0",
+    "aegir": "^12.3.0",
     "chai": "^4.1.2",
     "dirty-chai": "^2.0.1",
     "libp2p-tcp": "^0.11.1",
