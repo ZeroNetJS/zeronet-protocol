@@ -1,3 +1,13 @@
+<a name="0.1.5"></a>
+## [0.1.5](https://github.com/ZeroNetJS/zeronet-protocol/compare/v0.1.4...v0.1.5) (2017-12-23)
+
+
+### Bug Fixes
+
+* Always set .crypt on handshake response ([bdb1b44](https://github.com/ZeroNetJS/zeronet-protocol/commit/bdb1b44))
+
+
+
 <a name="0.1.4"></a>
 ## [0.1.4](https://github.com/ZeroNetJS/zeronet-protocol/compare/v0.1.3...v0.1.4) (2017-12-14)
 
