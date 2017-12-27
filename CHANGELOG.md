@@ -1,3 +1,13 @@
+<a name="0.1.6"></a>
+## [0.1.6](https://github.com/ZeroNetJS/zeronet-protocol/compare/v0.1.5...v0.1.6) (2017-12-27)
+
+
+### Features
+
+* Expose client as _client in request data ([b403e74](https://github.com/ZeroNetJS/zeronet-protocol/commit/b403e74))
+
+
+
 <a name="0.1.5"></a>
 ## [0.1.5](https://github.com/ZeroNetJS/zeronet-protocol/compare/v0.1.4...v0.1.5) (2017-12-23)
 
