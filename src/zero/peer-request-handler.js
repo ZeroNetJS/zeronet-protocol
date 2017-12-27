@@ -4,6 +4,7 @@ function PeerRequestHandler (name, req, client, handler) {
   const self = this
 
   function recv (data, cb) {
+    data._client = client
     req.handleRequest(cb, data, handler)
   }
 

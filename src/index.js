@@ -15,7 +15,7 @@ function protoparse (def, isout) {
     Object.keys(def).map(i => parseInt(i, 10)).reverse().forEach(i => {
       def[i + 1] = def[i]
     })
-    def['1'] = ['string', 'error']
+    def[1] = 'string error'
   }
   for (var i in def) {
     const v = def[i]
