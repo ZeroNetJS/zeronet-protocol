@@ -2,7 +2,7 @@
 
 const ppb = require('pull-protocol-buffers').pull
 const pull = require('pull-stream')
-const empty = require('protocol-buffers')('message PeerCmd {required bool empty = 1;}').PeerCmd.encode({
+const empty = require('protons')('message PeerCmd {required bool empty = 1;}').PeerCmd.encode({
   empty: true
 })
 const once = require('once')

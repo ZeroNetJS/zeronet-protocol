@@ -38,10 +38,10 @@
     "peer-request": "~0.1.2",
     "protons": "^1.0.1",
     "pull-cat": "^1.1.11",
-    "pull-protocol-buffers": "~0.1.1",
+    "pull-protocol-buffers": "~0.1.2",
     "pull-redirectable": "~0.1.2",
     "pull-stream": "^3.6.1",
-    "zeronet-client": "~0.3.5"
+    "zeronet-client": "~0.3.6"
   },
   "directories": {
     "test": "test",
@@ -49,10 +49,10 @@
     "lib": "src"
   },
   "devDependencies": {
-    "aegir": "^12.3.0",
+    "aegir": "^12.4.0",
     "chai": "^4.1.2",
     "dirty-chai": "^2.0.1",
-    "libp2p-tcp": "^0.11.1",
+    "libp2p-tcp": "^0.11.2",
     "pull-pair": "^1.1.0"
   },
   "contributors": [
