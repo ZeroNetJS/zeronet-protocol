@@ -1,3 +1,13 @@
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/ZeroNetJS/zeronet-protocol/compare/v0.1.7...v0.2.0) (2018-01-26)
+
+
+### Features
+
+* Better libp2p upgrading ([35dbad1](https://github.com/ZeroNetJS/zeronet-protocol/commit/35dbad1))
+
+
+
 <a name="0.1.7"></a>
 ## [0.1.7](https://github.com/ZeroNetJS/zeronet-protocol/compare/v0.1.6...v0.1.7) (2018-01-25)
 
