@@ -24,7 +24,7 @@ const doClient = protocol.upgradeConn({isServer: false})
 
 describe('zero protocol', () => {
   describe('handshake', () => {
-    it('can send hex-encrypted pings', cb => {
+    it('can send hex-"encrypted" pings', cb => {
       const [client, server] = Duplex()
       doServer(server, err => expect(err).to.not.exist())
       doClient(client, (err, c) => {
@@ -33,7 +33,7 @@ describe('zero protocol', () => {
       })
     })
 
-    skipbrowser(it)('can send hex-encrypted pings via tcp', cb => {
+    skipbrowser(it)('can send hex-"encrypted" pings via tcp', cb => {
       TCPDuplex((err, client, server) => {
         if (err) return cb(err)
         doServer(server, err => expect(err).to.not.exist())

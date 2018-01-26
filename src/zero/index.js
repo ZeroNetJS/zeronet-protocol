@@ -35,10 +35,14 @@ function ZProtocol (opt, zeronet) {
       if (!cb) cb = () => {}
       const c = conn.client = new HandshakeClient(conn, opt, zeronet, self)
       c.conn = conn
-      c.upgrade((err, client, upgrade) => {
+      c.upgrade((err, client, upgrade, isServer) => {
         if (err) return cb(err)
         if (upgrade) {
-          return cb(null, null, upgrade)
+          if (isServer) {
+            zeronet.swarm.lp2p.up.simulateConnection(upgrade)
+          } else {
+            cb(err, client, upgrade)
+          }
         } else {
           c.upgraded = client
           log('finished upgrade', opt)

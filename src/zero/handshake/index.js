@@ -10,7 +10,7 @@ const definition = { // Definitions are symmetric
   rev: 'number',
   target_ip: 'string',
   version: 'string',
-  libp2p: [a => a === undefined, Array.isArray]
+  upgradeLibp2p: [a => a === undefined, a => Boolean(a.matches(/^[A-Za-z0-9]+$/))]
 }
 const validate = require('../verify')
 const PeerRequest = require('peer-request')
@@ -35,7 +35,7 @@ function genHandshakeData (protocol, client, zeronet) {
   } else {
     d.peer_id = zeronet.peer_id
     d.target_ip = adv.ip || '0.0.0.0'
-    d.libp2p = (zeronet.swarm.lp2p || {}).adv
+    if (zeronet.swarm.lp2p && zeronet.swarm.lp2p.up) d.upgradeLibp2p = zeronet.swarm.lp2p.idB58
   }
   return d
 }
@@ -70,7 +70,7 @@ function Handshake (data) {
   }
 
   addCMD('commonCrypto', () => self.crypt_supported.filter(c => self.linked.crypt_supported.indexOf(c) !== -1)[0], true)
-  addCMD('getLibp2p', () => self.libp2p && self.linked.libp2p ? self.linked.libp2p : false, true)
+  addCMD('canUpgrade', () => self.upgradeLibp2p && self.linked.upgradeLibp2p ? self.linked.upgradeLibp2p : false, true)
 }
 
 module.exports = Handshake

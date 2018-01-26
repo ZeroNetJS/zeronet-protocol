@@ -57,8 +57,12 @@ class HandshakeClient extends EE {
         cb(null, client)
       }
 
-      if (handshake.getLibp2p() && handshake.getLibp2p().length) {
-        cb(null, null, handshake.getLibp2p()) // trigger upgrade
+      if (handshake.canUpgrade()) {
+        this.getRaw((err, conn) => {
+          if (err) return cb(err)
+          conn._lp2p_id = handshake.canUpgrade()
+          cb(null, null, conn, this.isServer) // trigger upgrade
+        })
       } else {
         if (this.protocol.crypto && handshake.commonCrypto()) {
           this.getRaw((err, conn) => {
